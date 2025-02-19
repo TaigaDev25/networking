@@ -1,0 +1,157 @@
+root@Spine-1> show configuration | no-more      
+version 24.4R1.9;
+system {
+    host-name Spine-1;
+    root-authentication {
+        encrypted-password "$6$Qh9JJIY7$Ds7Pm.Dz0A9Db/462cguYbKY0/iJZx6oxp4VClXQhV9bDbm/D831R/hhuM.Kj2MU9350ef2660MQ.7K6ErcL5/"; ## SECRET-DATA
+    }
+    services {
+        netconf {
+            ssh;
+        }
+        rest {
+            http {
+                port 8080;
+            }
+            enable-explorer;
+        }
+    }
+    arp {
+        aging-timer 5;
+    }
+    syslog {
+        file interactive-commands {
+            interactive-commands any;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+    }
+    processes {
+        dhcp-service {
+            traceoptions {
+                file dhcp_logfile size 10m;
+                level all;
+                flag packet;
+            }
+        }
+    }
+}
+chassis {
+    fpc 0 {
+        pic 0 {
+            number-of-ports 10;
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        mtu 9192;
+        unit 0 {
+            family inet {
+                address 192.168.1.1/30;
+            }
+        }
+    }
+    ge-0/0/1 {
+        mtu 9192;
+        unit 0 {
+            family inet {
+                address 192.168.1.5/30;
+            }
+        }
+    }
+    ge-0/0/2 {
+        unit 0 {
+            family inet {
+                address 192.168.1.9/30;
+            }
+        }
+    }
+    ge-0/0/3 {
+        unit 0 {
+            family inet {
+                dhcp;
+            }
+        }
+    }
+    fxp0 {
+        unit 0 {
+            family inet {
+                dhcp {
+                    vendor-id Juniper-ex9214-VM67B387BD40;
+                }
+            }
+            family inet6 {
+                dhcpv6-client {
+                    client-type stateful;
+                    client-ia-type ia-na;
+                    client-identifier duid-type duid-ll;
+                    vendor-id Juniper:ex9214:VM67B387BD40;
+                }
+            }
+        }
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                address 10.10.10.1/32;
+            }
+        }
+    }
+}
+multi-chassis {
+    mc-lag {
+        consistency-check;
+    }
+}
+routing-options {
+    router-id 10.10.10.1;
+    autonomous-system 65000;
+}
+protocols {
+    router-advertisement {
+        interface fxp0.0 {
+            managed-configuration;
+        }
+    }
+    bgp {
+        group OVERLAY {
+            type internal;
+            local-address 10.10.10.1;
+            family evpn {
+                signaling;
+            }
+            cluster 10.10.10.10;
+            multipath;
+            neighbor 10.10.10.3 {
+                description "IBGP/overlay peering to Leaf-1";
+                peer-as 65000;
+            }
+            neighbor 10.10.10.4 {
+                description "IBGP/overlay peering to Leaf-2";
+                peer-as 65000;
+            }
+        }
+        log-updown;
+        graceful-restart;
+    }
+    ospf {
+        area 0.0.0.0 {
+            interface ge-0/0/0.0;
+            interface ge-0/0/1.0;
+            interface ge-0/0/2.0;
+            interface lo0.0 {
+                passive;
+            }
+            interface ge-0/0/3.0;
+        }
+    }
+    lldp {
+        interface all;
+    }
+    lldp-med {
+        interface all;
+    }
+}
