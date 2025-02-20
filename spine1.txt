@@ -1,4 +1,3 @@
-This is a test.
 root@Spine-1> show configuration | no-more      
 version 24.4R1.9;
 system {
