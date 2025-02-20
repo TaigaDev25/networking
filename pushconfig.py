@@ -76,7 +76,7 @@ new_vlan_config = """
         </vlan>
     </vlans>
 </configuration>
-"""1
+"""
 
 # Optionally, you could create a BGP policy snippet, for example:
 # new_bgp_policy = """
