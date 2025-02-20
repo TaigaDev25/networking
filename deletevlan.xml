@@ -1,0 +1,9 @@
+<config>
+    <configuration xmlns="http://xml.juniper.net/xnm/1.1/xnm">
+        <vlans>
+            <vlan operation="delete">
+                <name>VLAN20</name>
+            </vlan>
+        </vlans>
+    </configuration>
+</config>
