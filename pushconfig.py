@@ -14,9 +14,9 @@ from jnpr.junos.exception import RpcError, ConnectRefusedError, CommitError
 # Step 1: Define connection details
 # ------------------------------------------------------------------------------
 JUNOS_DEVICE = {
-    'host': '192.168.56.10',
-    'user': 'lab',
-    'passwd': 'lab123',  # In a real environment, consider more secure methods (e.g., SSH key, vault, etc.)
+    'host': '10.10.10.1',
+    'user': 'ansible',
+    'passwd': 'juniper123',  # In a real environment, consider more secure methods (e.g., SSH key, vault, etc.)
     'port': 830,
     'gather_facts': False  # Speeds up connection; set True if you want device facts
 }
@@ -43,7 +43,6 @@ except Exception as e:
 try:
     # We can use device RPC calls directly. For example, to get the entire config:
     full_config_xml = dev.rpc.get_config(options={'format': 'xml'})
-    
     # Or if you want only certain sections (e.g., VLAN config), you can use filters:
     # filter_xml = """
     #     <configuration>
@@ -71,13 +70,13 @@ new_vlan_config = """
 <configuration>
     <vlans>
         <vlan>
-            <name>VLAN20</name>
+            <name>VNI_30000</name>
             <vlan-id>20</vlan-id>
-            <description>Created via PyEZ</description>
+            <description>VXLAN created via PyEZ</description>
         </vlan>
     </vlans>
 </configuration>
-"""
+"""1
 
 # Optionally, you could create a BGP policy snippet, for example:
 # new_bgp_policy = """
