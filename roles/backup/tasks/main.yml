@@ -2,7 +2,8 @@
   junipernetworks.junos.junos_config:
     backup: true
     backup_options:
-      filename: backup_{{ inventory_hostname }}_{{ ansible_date_time.iso8601 }}.cfg
+      filename: backup_{{ inventory_hostname }}_{{ timestamp }}.cfg
       dir_path: /home/win/juniperbackup
   vars:
     ansible_persistent_log_messages: True
+    timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}"
