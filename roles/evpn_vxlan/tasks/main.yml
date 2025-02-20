@@ -22,7 +22,7 @@
     confirm_commit: true
 
 - name: Backup the configuration
-  junipernetworks.junos.junos_config:\
+  junipernetworks.junos.junos_config:
     backup: true
     backup_options:
       filename: backup_{{ inventory_hostname }}.cfg
