@@ -1,49 +1,32 @@
-protocols {
-  bgp {
-    group EVPN-OVERLAY {
-      family evpn {
-        signaling;
-      }
-    }
-  }
-  evpn {
-    encapsulation-type vxlan;
-    switch-options {
-      route-distinguisher {{ loopback_ip }}:100;
-      vrf-target export-target;
-      vrf-target import-target;
-    }
-  }
-}
 vlans {
-  VLAN150 {
-    vlan-id 150;
-    l3-interface irb.150;
+  VNI_100 {
+    vlan-id 50;
+    l3-interface irb.50;
+    vxlan vni 1000;
   }
-  VLAN250 {
-    vlan-id 250;
-    l3-interface irb.250;
+  VNI_2000 {
+    vlan-id 60;
+    l3-interface irb.60;
+    vxlan vni 2000;
   }
 }
 interfaces {
   irb {
-    unit 150 {
+    unit 50 {
+      virtual-gateway-accept-data;
+      proxy-macip-advertisement;
       family inet {
-        address 192.168.150.1/24;
+        address 192.168.50.1/24{
+          virtual-gateway-address 192.168.50.254;
+        }
       }
     }
-    unit 250 {
+    unit 60 {
+      virtual-gateway-accept-data;
+      proxy-macip-advertisement;
       family inet {
-        address 192.168.250.1/24;
-      }
-    }
-  }
-  ae1 {
-    description "VXLAN Tunnel Interface";
-    unit 0 {
-      family vxlan {
-        tunnel {
-          source-address {{ loopback_ip }};
+        address 192.168.60.1/24{
+          virtual-gateway-address 192.168.60.254;
         }
       }
     }

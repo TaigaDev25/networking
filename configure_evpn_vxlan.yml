@@ -1,5 +1,5 @@
 - name: Configure EVPN and VXLAN
-  hosts: spines, leafs
+  hosts: leafs
   gather_facts: no
   connection: network_cli
   roles:
