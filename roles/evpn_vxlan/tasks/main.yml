@@ -5,12 +5,12 @@
       - set vlans VNI_100 l3-interface irb.60
       - set interfaces irb unit 50 proxy-macip-advertisement
       - set interfaces irb unit 50 virtual-gateway-accept-data
-      - set interfaces irb unit 50 inet address 192.168.50.1/24 preferred
-      - set interfaces irb unit 50 inet address 192.168.50.1/24 virtual-gateway-address 192.168.50.254
+      - set interfaces irb unit 50 family inet address 192.168.50.1/24 preferred
+      - set interfaces irb unit 50 family inet address 192.168.50.1/24 virtual-gateway-address 192.168.50.254
       - set interfaces irb unit 60 proxy-macip-advertisement
       - set interfaces irb unit 60 virtual-gateway-accept-data
-      - set interfaces irb unit 60 inet address 192.168.60.1/24 preferred
-      - set interfaces irb unit 60 inet address 192.168.60.1/24 virtual-gateway-address 192.168.60.254
+      - set interfaces irb unit 60 family inet address 192.168.60.1/24 preferred
+      - set interfaces irb unit 60 family inet address 192.168.60.1/24 virtual-gateway-address 192.168.60.254
     comment: install the vxlan l3 tunnel
 
 - name: Check Commit
