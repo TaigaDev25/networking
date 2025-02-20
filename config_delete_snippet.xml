@@ -1,7 +1,7 @@
 <configuration>
     <vlans operation="delete">
         <vlan>
-            <name>VLAN20</name>
+            <name>VNI_30000</name>
         </vlan>
     </vlans>
 </configuration>
