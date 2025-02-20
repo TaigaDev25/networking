@@ -1,9 +1,11 @@
-<configuration>
-    <vlans>
-        <vlan>
-            <name>VLAN20</name>
-            <vlan-id>20</vlan-id>
-            <description>Created via XML file snippet</description>
-        </vlan>
-    </vlans>
-</configuration>
+<config>
+    <configuration>
+        <vlans>
+            <vlan>
+                <name>VLAN20</name>
+                <vlan-id>20</vlan-id>
+                <description>Created via XML file snippet</description>
+            </vlan>
+        </vlans>
+    </configuration>
+</config>
