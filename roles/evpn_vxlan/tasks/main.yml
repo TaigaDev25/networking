@@ -1,0 +1,9 @@
+- name: Deploy EVPN/VXLAN Configuration
+  junipernetworks.junos.junos_config:
+    template: evpn_vxlan.j2
+    load: merge
+  register: evpn_cfg
+
+- name: Commit EVPN/VXLAN Configuration
+  junipernetworks.junos.junos_commit:
+  when: evpn_cfg.changed

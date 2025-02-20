@@ -1,0 +1,6 @@
+underlay_interfaces:
+  - { interface: ge-0/0/1, ip: "192.168.1.13", mask: "/30", peer: "Leaf1" }
+  - { interface: ge-0/0/2, ip: "192.168.1.17", mask: "/30", peer: "Leaf2" }
+
+loopback_ip: "10.10.10.2/32"
+ospf_area: "0.0.0.0"

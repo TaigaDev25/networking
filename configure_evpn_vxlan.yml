@@ -1,0 +1,6 @@
+- name: Configure EVPN and VXLAN
+  hosts: spines, leafs
+  gather_facts: no
+  connection: network_cli
+  roles:
+    - evpn_vxlan

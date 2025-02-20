@@ -1,0 +1,26 @@
+all:
+  children:
+    spines:
+      hosts:
+        Spine1:
+          ansible_host: 10.10.10.1
+          ansible_network_os: junos
+          ansible_user: root
+          ansible_password: juniper123
+        Spine2:
+          ansible_host: 10.10.10.2
+          ansible_network_os: junos
+          ansible_user: root
+          ansible_password: juniper123
+    leafs:
+      hosts:
+        Leaf1:
+          ansible_host: 10.10.10.3
+          ansible_network_os: junos
+          ansible_user: root
+          ansible_password: juniper123
+        Leaf2:
+          ansible_host: 10.10.10.4
+          ansible_network_os: junos
+          ansible_user: root
+          ansible_password: juniper123
