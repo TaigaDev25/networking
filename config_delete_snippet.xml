@@ -1,11 +1,9 @@
 <configuration>
     <vlans>
-        <delete-config>
-            <vlan>
+            <vlan operation="delete">
                 <name>VNI_30000</name>
                 <description>VXLAN created via PyEZ</description>
                 <vlan-id>20</vlan-id>
             </vlan>
-        </delete-config>
     </vlans>
 </configuration>
