@@ -1,9 +1,7 @@
 <configuration>
-    <vlans>
-            <vlan>
-                <name operation="delete">VNI_30000</name>
-                <description operation="delete">VXLAN created via PyEZ</description>
-                <vlan-id operation="delete">20</vlan-id>
-            </vlan>
+    <vlans operation="delete">
+        <vlan>
+            <name>VNI_30000</name>
+        </vlan>
     </vlans>
 </configuration>
