@@ -1,0 +1,29 @@
+{
+    "devices": [
+      {
+        "host": "10.10.10.1",
+        "user": "ansible",
+        "passwd": "juniper123",
+        "port": 830
+      },
+      {
+        "host": "10.10.10.2",
+        "user": "ansible",
+        "passwd": "juniper123",
+        "port": 830
+      },
+      {
+        "host": "10.10.10.3",
+        "user": "ansible",
+        "passwd": "juniper123",
+        "port": 830
+      },
+      {
+        "host": "10.10.10.4",
+        "user": "ansible",
+        "passwd": "juniper123",
+        "port": 830
+      }
+    ]
+  }
+  
