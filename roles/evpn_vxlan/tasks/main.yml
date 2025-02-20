@@ -16,5 +16,5 @@
     confirm_commit: true
     backup: true
     backup_options:
-      filename: backup_{{ hosts }}.cfg
+      filename: backup_{{ inventory_hostname }}.cfg
       dir_path: /home/win/juniperbackup
