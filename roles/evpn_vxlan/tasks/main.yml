@@ -11,10 +11,19 @@
       - set interfaces irb unit 60 virtual-gateway-accept-data
       - set interfaces irb unit 60 inet address 192.168.60.1/24 preferred
       - set interfaces irb unit 60 inet address 192.168.60.1/24 virtual-gateway-address 192.168.60.254
-    #check_commit: true
-    #comment: install the vxlan l3 tunnel
+    comment: install the vxlan l3 tunnel
+
+- name: Check Commit
+  junipernetworks.junos.junos_config:
+    check_commit: true
+
+- name: Commit the new configuration
+  junipernetworks.junos.junos_config:
     confirm_commit: true
-    #backup: true
-    #backup_options:
-      #filename: backup_{{ inventory_hostname }}.cfg
-      #dir_path: /home/win/juniperbackup
+
+- name: Backup the configuration
+  junipernetworks.junos.junos_config:\
+    backup: true
+    backup_options:
+      filename: backup_{{ inventory_hostname }}.cfg
+      dir_path: /home/win/juniperbackup
