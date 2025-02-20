@@ -16,11 +16,13 @@ all:
       hosts:
         Leaf1:
           host: 10.10.10.3
-          #ansible_network_os: junos
+          ansible_network_os: junos
           username: root
           password: juniper123
+          ansible_connection: netconf
         Leaf2:
           host: 10.10.10.4
-          #ansible_network_os: junos
+          ansible_network_os: junos
           username: root
           password: juniper123
+          ansible_connection: netconf
