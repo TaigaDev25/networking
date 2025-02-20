@@ -1,0 +1,6 @@
+- name: Backup
+  hosts: leafs
+  gather_facts: no
+  connection: local
+  roles:
+    - backup

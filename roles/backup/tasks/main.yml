@@ -1,0 +1,8 @@
+- name: Backup the configuration
+  junipernetworks.junos.junos_config:
+    backup: true
+    backup_options:
+      filename: backup_{{ inventory_hostname }}_{{ ansible_date_time.iso8601 }}.cfg
+      dir_path: /home/win/juniperbackup
+  vars:
+    ansible_persistent_log_messages: True
