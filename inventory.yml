@@ -28,6 +28,5 @@ all:
           ansible_user: root
           ansible_password: juniper123
           ansible_connection: netconf
-
 [all:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
