@@ -1,6 +1,6 @@
 - name: Configure EVPN and VXLAN
   hosts: leafs
   gather_facts: no
-  connection: ansible.netcommon.netconf
+  connection: local
   roles:
     - evpn_vxlan
