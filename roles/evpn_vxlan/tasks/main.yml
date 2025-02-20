@@ -1,6 +1,6 @@
 - name: Deploy EVPN/VXLAN Configuration
   junipernetworks.junos.junos_config:
-    lines: 
+    lines:
       - set vlans VNI_100 l3-interface irb.50
       - set vlans VNI_100 l3-interface irb.60
       - set interfaces irb unit 50 proxy-macip-advertisement
