@@ -45,18 +45,25 @@ def retrieve_config_xml(device_params):
     """
     Connects to a Junos device using PyEZ, retrieves the current config in XML.
     Returns a tuple: (hostname, xml_config_string).
+
+    If gather_facts=True and the device supports it, we'll get the device's
+    real hostname from dev.facts['hostname']. Otherwise, we fallback to the
+    IP or name in device_params['host'].
     """
     dev_params = {
         'host': device_params['host'],
         'user': device_params.get('user', 'root'),
         'passwd': device_params.get('passwd', ''),
         'port': device_params.get('port', 830),
-        'gather_facts': True
+        'gather_facts': True  # So we can get dev.facts['hostname'] if supported
     }
 
     try:
         with Device(**dev_params) as dev:
-            device_hostname = dev.facts.get('hostname') or dev.host
+            # Use either the discovered hostname (if gather_facts is True)
+            # or the one in device_params
+            device_hostname = dev.facts.get('hostname') or device_params['host']
+
             # Retrieve config in XML format
             config_xml = dev.rpc.get_config(options={'format': 'xml'})
             # Convert from an lxml Element to a string
@@ -97,40 +104,44 @@ def push_config_to_device(device_params, config_snippet):
     """
     Connects to the device, locks config, loads 'config_snippet' (XML),
     commits changes, handles errors with rollback, then unlocks.
+    Uses device_params['host'] for logging to avoid 'dev.host' attribute issue.
     """
     dev_params = {
         'host': device_params['host'],
         'user': device_params.get('user', 'root'),
         'passwd': device_params.get('passwd', ''),
         'port': device_params.get('port', 830),
-        'gather_facts': False  # We don't need facts here, so we skip them
+        'gather_facts': False  # We don't need facts for the commit process
     }
+
+    # We'll just reference device_params['host'] in logs, so it won't fail
+    log_host = device_params['host']
 
     try:
         with Device(**dev_params) as dev:
             cfg = Config(dev)
             # Lock config
             cfg.lock()
-            print(f"[INFO] Locked configuration on {dev.host}.")
+            print(f"[INFO] Locked configuration on {log_host}.")
 
             # Load snippet in XML format
             cfg.load(config_snippet, format='xml', merge=True)
-            print(f"[INFO] Loaded config snippet on {dev.host}.")
+            print(f"[INFO] Loaded config snippet on {log_host}.")
 
             # Commit check
             cfg.commit_check()
-            print(f"[INFO] Commit check successful on {dev.host}.")
+            print(f"[INFO] Commit check successful on {log_host}.")
 
             # Commit
             cfg.commit()
-            print(f"[INFO] Configuration committed on {dev.host}.")
+            print(f"[INFO] Configuration committed on {log_host}.")
 
             # Unlock config
             cfg.unlock()
-            print(f"[INFO] Unlocked configuration on {dev.host}.")
+            print(f"[INFO] Unlocked configuration on {log_host}.")
 
     except RpcError as rpc_err:
-        print(f"[ERROR] RPC error on {dev_params['host']}: {rpc_err}")
+        print(f"[ERROR] RPC error on {log_host}: {rpc_err}")
         # Attempt a rollback
         try:
             cfg.rollback()
@@ -139,7 +150,7 @@ def push_config_to_device(device_params, config_snippet):
             print(f"[ERROR] Rollback failed: {rb_err}")
 
     except CommitError as commit_err:
-        print(f"[ERROR] Commit failed on {dev_params['host']}: {commit_err}")
+        print(f"[ERROR] Commit failed on {log_host}: {commit_err}")
         # Attempt a rollback
         try:
             cfg.rollback()
@@ -148,7 +159,7 @@ def push_config_to_device(device_params, config_snippet):
             print(f"[ERROR] Rollback failed: {rb_err}")
 
     except Exception as e:
-        print(f"[ERROR] Unexpected error on {dev_params['host']}: {e}")
+        print(f"[ERROR] Unexpected error on {log_host}: {e}")
         # Attempt a rollback
         try:
             cfg.rollback()
@@ -175,8 +186,7 @@ def main():
         print("[WARNING] No devices found in the JSON file.")
         sys.exit(0)
 
-    # This is our sample snippet to push (XML format).
-    # Example: Creating VLAN 20 with a description.
+    # Sample snippet to push (XML format).
     CONFIG_SNIPPET = """
 <configuration>
     <vlans>
