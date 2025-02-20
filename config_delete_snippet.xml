@@ -1,0 +1,7 @@
+<configuration>
+    <vlans operation="delete">
+        <vlan>
+            <name>VLAN20</name>
+        </vlan>
+    </vlans>
+</configuration>
